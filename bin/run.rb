@@ -16,22 +16,15 @@ def menu
 end
 
 
-
 def user_input
     gets.chomp.to_i
 end
 
 
-def list_all_users
-    User.all.each do |user|
-        puts "#{user.name} || balance= $#{user.account_balance}"
-    end
-end
-
 
 def list_all_items
-    Item.all.each do |item|
-        puts"#{item.name}= $#{item.price} "
+    Item.all.each_with_index do |item,i|
+        puts"#{i+1}. #{item.name} "
     end
 end
 
@@ -53,8 +46,8 @@ def find_milk(item)
     Item.all.find{|items|items.name==item}
 end
 
-def create_user(new_user,new_balance)
-    User.create(name: new_user ,account_balance: new_balance)
+def create_user(new_user)
+    User.create(name: new_user )
 end
 
 
@@ -83,8 +76,13 @@ def select_item (user)
     when 1
         select_egg=find_egg("Egg")
     
-
-        order_egg= Order.all.find{|order| order.user.name == user.name && order.item.name == select_egg.name}      
+    
+       order_egg= Order.all.find do |order|
+        # check if order
+        if order.user
+             order.user.name == user.name && order.item.name == select_egg.name 
+        end   
+    end
 
         if  order_egg
             order_egg.quantity=order_egg.quantity+1
@@ -98,7 +96,11 @@ def select_item (user)
     when 2
         select_bread=find_bread("Bread")
 
-        order_bread= Order.all.find{|order| order.user.name==user.name && order.item.name==select_bread.name}
+        order_bread= Order.all.find do |order| 
+            if order.user
+                order.user.name==user.name && order.item.name==select_bread.name
+            end
+        end
 
         
         if  order_bread
@@ -113,8 +115,11 @@ def select_item (user)
     when 3
         select_milk=find_milk("Milk")
 
-        order_milk= Order.all.find{|order| order.user.name==user.name && order.item.name==select_milk.name}
-
+        order_milk= Order.all.find do |order| 
+            if order.user
+            order.user.name==user.name && order.item.name==select_milk.name
+            end
+        end
         
         if  order_milk
             order_milk.quantity=order_milk.quantity+1
@@ -136,7 +141,11 @@ def remove_item(user)
     when 1
         select_egg=find_egg("Egg")
     
-        order_egg= Order.all.find{|order| order.user.name == user.name && order.item.name == select_egg.name} 
+        order_egg= Order.all.find do |order| 
+            if order.user
+            order.user.name == user.name && order.item.name == select_egg.name
+            end
+        end
 
        if order_egg && order_egg.quantity > 0
             order_egg.quantity=order_egg.quantity-1
@@ -159,7 +168,12 @@ def remove_item(user)
         select_bread=find_bread("Bread")
     
 
-        order_bread= Order.all.find{|order| order.user.name == user.name && order.item.name == select_bread.name} 
+        order_bread= Order.all.find do |order|
+            if order.user
+         order.user.name == user.name && order.item.name == select_bread.name
+        end
+    end
+
 
        if order_bread && order_bread.quantity > 0
             order_bread.quantity=order_bread.quantity-1
@@ -178,7 +192,12 @@ def remove_item(user)
         select_milk=find_milk("Milk")
     
 
-        order_milk= Order.all.find{|order| order.user.name == user.name && order.item.name == select_milk.name} 
+        order_milk= Order.all.find do |order| 
+            if order.user
+                order.user.name == user.name && order.item.name == select_milk.name 
+            end
+        end
+
 
        if order_milk && order_milk.quantity > 0
             order_milk.quantity=order_milk.quantity-1
@@ -221,7 +240,7 @@ def get_user_input
 
     when 1
         puts "Here are all the users: "
-        list_all_users
+        display_all_users
 
     when 2
         puts "Here are all the items: "
@@ -231,8 +250,9 @@ def get_user_input
         puts "Here are all the order lists from each user: "
 
         Order.all.each do |order| 
+            if order.user
             puts  "User: #{order.user.name}, Item: #{order.item.name}, quant: #{order.quantity}"
-
+            end
         end
 
     when 4
@@ -244,7 +264,7 @@ def get_user_input
         user  = choose_user(User.all[user_input-1].name)
                     
         puts "Please choose an item to add into the order list: "
-        items
+        list_all_items
         
         select_item(user)
 
@@ -329,11 +349,7 @@ def get_user_input
 
         user_name= gets.chomp.to_str
         
-        puts "How much balance you want to put in #{user_name} account ?"
-
-        user_balance=user_input
-
-        create_user(user_name,user_balance)
+        create_user(user_name)
     
     
 
