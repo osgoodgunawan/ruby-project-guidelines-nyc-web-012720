@@ -90,7 +90,7 @@ def select_item (user)
         else
             order_egg=Order.create(user_id:user.id, item_id: select_egg.id, quantity:1)
         end
-        puts  "User: #{user.name}, Item: #{ select_egg.name},$#{ select_egg.price}, quant: #{order_egg.quantity}"
+        puts  "User: #{user.name}, Item: #{select_egg.name}, quant: #{order_egg.quantity}"
         
     # Bread 
     when 2
@@ -109,7 +109,7 @@ def select_item (user)
         else
             order_bread=Order.create(user_id:user.id, item_id:select_bread.id, quantity:1)
         end
-        puts  "User: #{user.name}, Item: #{select_bread.name},$#{select_bread.price}, quant: #{order_bread.quantity}"
+        puts  "User: #{user.name}, Item: #{select_bread.name}, quant: #{order_bread.quantity}"
     
     # Milk 
     when 3
@@ -127,7 +127,7 @@ def select_item (user)
         else
             order_milk=Order.create(user_id:user.id, item_id:select_milk.id, quantity:1)
         end
-        puts  "User: #{user.name}, Item: #{select_milk.name},$#{select_milk.price}, quant: #{order_milk.quantity}"
+        puts  "User: #{user.name}, Item: #{select_milk.name}, quant: #{order_milk.quantity}"
 
     end
 
@@ -161,7 +161,7 @@ def remove_item(user)
 
         end
         
-        puts  "User: #{user.name}, Item: #{ select_egg.name},$#{ select_egg.price}, quant: #{order_egg.quantity}"
+        puts  "User: #{user.name}, Item: #{select_egg.name}, quant: #{order_egg.quantity}"
 
     #Bread   
     when 2 
@@ -185,7 +185,7 @@ def remove_item(user)
             puts "Sorry! there is no bread in #{user.name}'s order !!!"
         end
 
-        puts  "User: #{user.name}, Item: #{ select_bread.name},$#{ select_bread.price}, quant: #{order_bread.quantity}"
+        puts  "User: #{user.name}, Item: #{ select_bread.name}, quant: #{order_bread.quantity}"
 
     #Milk    
     when 3
@@ -209,7 +209,7 @@ def remove_item(user)
             puts "Sorry! there is no milk in #{user.name}'s order !!!"
         end
 
-        puts  "User: #{user.name}, Item: #{ select_milk.name},$#{ select_milk.price}, quant: #{order_milk.quantity}"
+        puts  "User: #{user.name}, Item: #{select_milk.name}, quant: #{order_milk.quantity}"
 
 
     end

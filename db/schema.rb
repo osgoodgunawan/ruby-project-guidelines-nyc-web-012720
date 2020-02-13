@@ -14,7 +14,6 @@ ActiveRecord::Schema.define(version: 3) do
 
   create_table "items", force: :cascade do |t|
     t.string "name"
-    t.float "price"
   end
 
   create_table "orders", force: :cascade do |t|
@@ -25,7 +24,6 @@ ActiveRecord::Schema.define(version: 3) do
 
   create_table "users", force: :cascade do |t|
     t.string "name"
-    t.float "account_balance"
   end
 
 end
