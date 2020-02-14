@@ -90,6 +90,7 @@ def select_item (user)
         else
             order_egg=Order.create(user_id:user.id, item_id: select_egg.id, quantity:1)
         end
+        
         puts  "User: #{user.name}, Item: #{select_egg.name}, quant: #{order_egg.quantity}"
         
     # Bread 
@@ -109,6 +110,7 @@ def select_item (user)
         else
             order_bread=Order.create(user_id:user.id, item_id:select_bread.id, quantity:1)
         end
+        
         puts  "User: #{user.name}, Item: #{select_bread.name}, quant: #{order_bread.quantity}"
     
     # Milk 
@@ -127,6 +129,7 @@ def select_item (user)
         else
             order_milk=Order.create(user_id:user.id, item_id:select_milk.id, quantity:1)
         end
+        
         puts  "User: #{user.name}, Item: #{select_milk.name}, quant: #{order_milk.quantity}"
 
     end
@@ -154,9 +157,11 @@ def remove_item(user)
        elsif order_egg==nil
 
         order_egg=Order.create(user_id:user.id, item_id:select_egg.id, quantity:0)
+        puts
         puts "Sorry! there is no egg in #{user.name}'s order !!!"
 
         else
+            puts
             puts "Sorry! there is no egg in #{user.name}'s order !!!"
 
         end
@@ -169,6 +174,7 @@ def remove_item(user)
     
 
         order_bread= Order.all.find do |order|
+            #this check if the order user(name) exist by looping(go through) all the order
             if order.user
          order.user.name == user.name && order.item.name == select_bread.name
         end
@@ -180,11 +186,13 @@ def remove_item(user)
             order_bread.save
         elsif order_bread==nil
             order_bread=Order.create(user_id:user.id, item_id:select_bread.id, quantity:0)
+            puts
             puts "Sorry! there is no bread in #{user.name}'s order !!!"
         else
+            puts
             puts "Sorry! there is no bread in #{user.name}'s order !!!"
         end
-
+        
         puts  "User: #{user.name}, Item: #{ select_bread.name}, quant: #{order_bread.quantity}"
 
     #Milk    
@@ -204,11 +212,13 @@ def remove_item(user)
             order_milk.save
         elsif order_milk==nil
             order_milk=Order.create(user_id:user.id, item_id:select_milk.id, quantity:0)
+            puts
             puts "Sorry! there is no milk in #{user.name}'s order !!!"
         else
+            puts
             puts "Sorry! there is no milk in #{user.name}'s order !!!"
         end
-
+        
         puts  "User: #{user.name}, Item: #{select_milk.name}, quant: #{order_milk.quantity}"
 
 
@@ -227,16 +237,18 @@ end
 
 
 
-puts "Welcome to the Order list!"
-  
+puts "***** WELCOME TO THE ORDER'S LIST******"
 
 def get_user_input
-    
-    puts "What would you like to do ? "
+
+    puts
+    puts " What would you like to do ? "
+    puts
 
     menu
-    
+    puts 
     case(user_input)
+
 
     when 1
         puts "Here are all the users: "
@@ -305,8 +317,7 @@ def get_user_input
         display_all_users
 
         user= choose_user(User.all[user_input-1].name)
-       
-                
+                        
         puts "Please choose an item to remove from the order list: "
         list_all_items
         
@@ -370,4 +381,7 @@ def get_user_input
 end
 
 get_user_input
+
+
+
 
