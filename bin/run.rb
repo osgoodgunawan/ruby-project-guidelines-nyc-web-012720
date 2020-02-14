@@ -3,7 +3,7 @@ require 'pry'
 
 system ("clear")
 
-
+# ALL THE HELPER METHODS
 def menu
     puts "1. See all the users"
     puts "2. See all the items"
@@ -299,17 +299,12 @@ end
 
 
 
-
-
-
-
-
-puts "***** WELCOME TO THE ORDER'S LIST******"
+puts "***** WELCOME TO THE ORDER LIST ******"
 
 def get_user_input
-
+    
     puts
-    puts " What would you like to do ? "
+    puts "Please choose a number on the display: "
     puts
 
     menu
@@ -318,25 +313,38 @@ def get_user_input
 
 
     when 1
+        puts
+        if User.all.length<=0
+            puts"Oops!Sorry, there is no user yet! Please create a user!"
+        else
         puts "Here are all the users: "
         display_all_users
+        end
 
     when 2
+        puts
         puts "Here are all the items: "
         list_all_items
 
     when 3
-        puts "Here are all the order lists from each user: "
+        puts
+        # binding.pry
 
+        puts "Here are all the order lists from each user: "
         Order.all.each do |order| 
             if order.user
             puts  "User: #{order.user.name}, Item: #{order.item.name}, quant: #{order.quantity}"
             end
         end
+    
 
     when 4
-
-        puts "Please choose a user:  "
+        puts
+        if User.all.length<=0
+            puts "Oops!Sorry, there is no user yet! Please create a user!"
+        
+        else    
+        puts "Please choose a user number:  "
         
         
         display_all_users
@@ -349,6 +357,7 @@ def get_user_input
 
         puts
         select_item(user)
+        end
 
             # case (user_input)
 
@@ -382,7 +391,12 @@ def get_user_input
                     
         
     when 5
-        puts "Please choose a user:  "
+        if User.all.length<=0
+            puts "Oops!Sorry, there is no user yet! Please create a user!"
+       
+        else
+        puts
+        puts "Please choose a user number:  "
     
 
         display_all_users
@@ -396,6 +410,7 @@ def get_user_input
         puts
         remove_item(user)
 
+        end
         # case (user_input)
 
         #     #1 Lebron
@@ -426,25 +441,23 @@ def get_user_input
         #         remove_item(user)
         #     end
 
-
-
     when 6
         puts " Welcome! Create a user name:  "
 
         user_name= gets.chomp.to_str
         
         create_user(user_name)
-    
-    
-
 
     when 7
-        puts "Delete a user: "
-
-        users_map = display_all_users
-            
-        
-        delete_user(user_input, users_map)
+        if User.all.length<=0
+            puts "Oops!Sorry, there is no user yet! Please create a user!"
+            # binding.pry
+        else
+            puts
+            puts "Delete a user number: "
+            users_map = display_all_users
+            delete_user(user_input, users_map)
+        end
 
     when 8
         return
