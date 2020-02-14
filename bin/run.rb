@@ -15,12 +15,9 @@ def menu
     puts "8. Exit "
 end
 
-
 def user_input
     gets.chomp.to_i
 end
-
-
 
 def list_all_items
     Item.all.each_with_index do |item,i|
@@ -28,28 +25,17 @@ def list_all_items
     end
 end
 
-
 def choose_user(user)
     User.all.find{|users| users.name == user }
 end
 
-
-def find_egg(item)
-    Item.all.find{|items| items.name == item}
-end
-
-def find_bread(item)
-    Item.all.find{|items| items.name == item}
-end
-
-def find_milk(item)
+def find_item(item)
     Item.all.find{|items|items.name==item}
 end
 
 def create_user(new_user)
     User.create(name: new_user )
 end
-
 
 def display_all_users
     users_map = []
@@ -67,14 +53,12 @@ def delete_user(user, users_map)
 end
 
 
-
-
 def select_item (user)
     
     case(user_input)
     # EGG
     when 1
-        select_egg=find_egg("Egg")
+        select_egg=find_item("Egg")
     
     
        order_egg= Order.all.find do |order|
@@ -95,7 +79,7 @@ def select_item (user)
         
     # Bread 
     when 2
-        select_bread=find_bread("Bread")
+        select_bread=find_item("Bread")
 
         order_bread= Order.all.find do |order| 
             if order.user
@@ -115,7 +99,7 @@ def select_item (user)
     
     # Milk 
     when 3
-        select_milk=find_milk("Milk")
+        select_milk=find_item("Milk")
 
         order_milk= Order.all.find do |order| 
             if order.user
@@ -132,6 +116,43 @@ def select_item (user)
         
         puts  "User: #{user.name}, Item: #{select_milk.name}, quant: #{order_milk.quantity}"
 
+    #Tofu
+    when 4
+        select_tofu=find_item("Tofu")
+
+        order_tofu=Order.all.find do |order|
+            if order.user
+                order.user.name == user.name && order.item.name == select_tofu.name
+            end
+        end
+
+        if order_tofu
+            order_tofu.quantity=order_tofu.quantity+1
+            order_tofu.save
+        else
+            order_tofu=Order.create(user_id:user.id,item_id:select_tofu.id, quantity:1)
+        end
+
+        puts "User :#{user.name}, Item: #{select_tofu.name}, quant: #{order_tofu.quantity}"
+
+    #Beef
+    when 5
+        select_beef=find_item("Beef")
+
+        order_beef=Order.all.find do |order|
+            if order.user
+                order.user.name == user.name && order.item.name == select_beef.name
+            end
+        end
+
+        if order_beef
+            order_beef.quantity=order_beef.quantity+1
+            order_beef.save
+        else
+            order_beef=Order.create(user_id:user.id, item_id:select_beef.id, quantity:1)
+        end
+        puts "User :#{user.name}, Item: #{select_beef.name},quant: #{order_beef.quantity}"
+
     end
 
 end
@@ -142,7 +163,7 @@ def remove_item(user)
     case (user_input)
     #Egg  
     when 1
-        select_egg=find_egg("Egg")
+        select_egg=find_item("Egg")
     
         order_egg= Order.all.find do |order| 
             if order.user
@@ -170,7 +191,7 @@ def remove_item(user)
 
     #Bread   
     when 2 
-        select_bread=find_bread("Bread")
+        select_bread=find_item("Bread")
     
 
         order_bread= Order.all.find do |order|
@@ -197,7 +218,7 @@ def remove_item(user)
 
     #Milk    
     when 3
-        select_milk=find_milk("Milk")
+        select_milk=find_item("Milk")
     
 
         order_milk= Order.all.find do |order| 
@@ -221,6 +242,52 @@ def remove_item(user)
         
         puts  "User: #{user.name}, Item: #{select_milk.name}, quant: #{order_milk.quantity}"
 
+    #Tofu
+    when 4      
+        select_tofu=find_item("Tofu")
+
+        order_tofu=Order.all.find do |order|
+            if order.user
+                order.user.name == user.name && order.item.name == select_tofu.name
+            end
+        end
+
+        if order_tofu && order_tofu.quantity >0
+            order_tofu.quantity=order_tofu.quantity-1
+            order_tofu.save
+        elsif order_tofu==nil
+            order_tofu= Order.create(user_id:user.id, item_id:select_tofu.id, quantity:0)
+            puts
+            puts "Sorry! there is no tofu in #{user.name}'s order !!!'"
+        else
+            puts
+            puts "Sorry! there is no tofu in #{user.name}'s order !!!'"
+
+        end
+        puts "User: #{user.name}, Item:#{select_tofu.name}, quant: #{order_tofu.quantity}"
+
+    #Beef
+    when 5
+        select_beef=find_item("Beef")
+
+        order_beef= Order.all.find do |order|
+            if order.user
+                order.user.name==user.name && order.item.name == select_beef.name
+            end
+        end
+
+        if order_beef && order_beef.quantity >0
+            order_beef.quantity=order_beef.quantity-1
+            order_beef.save
+        elsif order_beef==nil
+            order_beef=Order.create(user_id:user.id, item_id:select_beef.id, quantity:0)
+            puts
+            puts "Sorry! there is no beef in #{user.name}'s order !!!'"
+        else
+            puts
+            puts "Sorry! there is no beef in #{user.name}'s order !!!'"
+        end
+        puts "User: #{user.name}, Item: #{select_beef.name}, quant:#{order_beef.quantity}"
 
     end
 end
@@ -271,13 +338,16 @@ def get_user_input
 
         puts "Please choose a user:  "
         
+        
         display_all_users
-     
+        
+        puts
         user  = choose_user(User.all[user_input-1].name)
-                    
+        
         puts "Please choose an item to add into the order list: "
         list_all_items
-        
+
+        puts
         select_item(user)
 
             # case (user_input)
@@ -313,14 +383,17 @@ def get_user_input
         
     when 5
         puts "Please choose a user:  "
+    
 
         display_all_users
 
+        puts                
         user= choose_user(User.all[user_input-1].name)
-                        
+
         puts "Please choose an item to remove from the order list: "
         list_all_items
         
+        puts
         remove_item(user)
 
         # case (user_input)
@@ -356,7 +429,7 @@ def get_user_input
 
 
     when 6
-        puts "Welcome! Create a user name:  "
+        puts " Welcome! Create a user name:  "
 
         user_name= gets.chomp.to_str
         
